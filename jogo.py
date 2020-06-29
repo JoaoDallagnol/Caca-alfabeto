@@ -1,1 +1,3 @@
-print("CAÇA ALFABETO")
+import pygame
+import time
+import random
