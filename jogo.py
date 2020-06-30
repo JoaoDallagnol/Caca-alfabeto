@@ -42,3 +42,13 @@ tres_largura = 76
 tres_altura = 78
 
 fundo = pygame.image.load("assest/fundo.jpg")
+
+letras_numero = [a,b,c,um,dois,tres]
+
+coleta = pygame.image.load(random.choice(letras_numero))
+
+def mostrarCesta(x, y):
+    gameDisplay.blit(cesta, (x, y))
+
+def mostrarAlfabeto(x, y):
+    gameDisplay.blit(coleta, (x, y))
