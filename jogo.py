@@ -95,4 +95,43 @@ for item in letras_numero:
                     pygame.quit()
                     # fecha tudo!
                     quit()
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_LEFT:
+                        movimentoX = -10
+                    elif evento.key == pygame.K_RIGHT:
+                        movimentoX = 10
+                if evento.type == pygame.KEYUP:
+                    if evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT:
+                        movimentoX = 0
+            cesta_posicaoX = cesta_posicaoX + movimentoX
+
+            gameDisplay.fill(branco)
+            gameDisplay.blit(fundo, (0, 0))
+
+            mostrarCesta(cesta_posicaoX, cesta_posicaoY)
+
+            '''
+            mostrarAlfabeto(missile_posicaoX, missile_posicaoY)
+            missile_posicaoY = missile_posicaoY + missile_spped
+            '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     game_loop()
