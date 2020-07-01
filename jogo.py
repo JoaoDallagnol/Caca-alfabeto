@@ -10,6 +10,8 @@ gameDisplay = pygame.display.set_mode((tela_largura, tela_altura))
 pygame.display.set_caption("Caça Alfabeto")
 icone = pygame.image.load("assets/alfabetoIcon.png")
 pygame.display.set_icon(icone)
+coletado = pygame.mixer.Sound("assets/coleta.aiff")
+perdeu = pygame.mixer.Sound("assets/lose.wav")
 clock = pygame.time.Clock()
 preto = (0, 0, 0)
 branco = (255, 255, 255)
@@ -21,11 +23,9 @@ a = pygame.image.load("assets/a_icon.png")
 a_largura = 86
 a_altura = 86
 
-
 b = pygame.image.load("assets/b_icon.png")
 b_largura = 86
 b_altura = 86
-
 
 c = pygame.image.load("assets/c_icon.png")
 c_largura = 79
@@ -39,16 +39,13 @@ dois = pygame.image.load("assets/dois_icon.png")
 dois_largura = 68 
 dois_altura = 68
 
-
 tres = pygame.image.load("assets/tres_icon.png")
 tres_largura = 76
 tres_altura = 78
 
-
 fundo = pygame.image.load("assets/fundo.jpg")
 
 letras_numero = [a,b,c,um,dois,tres]
-
 
 def mostrarCesta(x, y):
     gameDisplay.blit(cesta, (x, y))
@@ -57,12 +54,11 @@ def mostrarAlfabeto(objeto,x, y):
     gameDisplay.blit(objeto, (x, y))
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, branco)
+    textSurface = font.render(text, True, preto)
     return textSurface, textSurface.get_rect()
 
-
 def message_display(text):
-    largeText = pygame.font.Font("freesansbold.ttf", 115)
+    largeText = pygame.font.Font("freesansbold.ttf", 45)
     TextSurf, TextRect = text_objects(text, largeText)
     TextRect.center = (tela_largura/2, tela_altura/2)
     gameDisplay.blit(TextSurf, TextRect)
@@ -70,17 +66,15 @@ def message_display(text):
     time.sleep(3)
     game_loop()
 
-
 def dead():
     pygame.mixer.music.stop()
-    message_display("Você Perdeu")
-
+    pygame.mixer.Sound.play(perdeu)
+    message_display("Ops!! Você Coletou um Numero!!")
 
 def escrePlacar(contador):
     font = pygame.font.SysFont(None, 45)
     text = font.render("Letras Coletadas: "+str(contador), True, branco)
     gameDisplay.blit(text, (10, 30))
-
 
 def pegaObjeto(indice):
     if indice==1:
@@ -96,7 +90,6 @@ def pegaObjeto(indice):
     elif indice==6:
         return tres
 
-
 def game_loop():
     pygame.mixer.music.load("assets/SoundTrack")
     pygame.mixer.music.play(-1)
@@ -111,8 +104,6 @@ def game_loop():
     coleta = 0
     item = pegaObjeto( random.randrange(1, 7) )
 
-
-    
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -155,6 +146,7 @@ def game_loop():
                 if item == um or item == dois or item == tres:
                     dead()
                 elif item == a or item == b or item == c:
+                    pygame.mixer.Sound.play(coletado)                    
                     item_posicaoY = 900
                     item_posicaoX = 3000
                     coleta = coleta + 1
@@ -163,28 +155,6 @@ def game_loop():
                         item = pegaObjeto( random.randrange(1, 7) )
                         item_posicaoX = random.randrange(0, tela_largura)
                         item_posicaoY = 0-86
-                        
-                    
-                    
-        
-        
-        
         pygame.display.update()
         clock.tick(60)
-
-
-        
-        
-        
-
-
-
-
-
-
-
-
-
-
-
 game_loop()
