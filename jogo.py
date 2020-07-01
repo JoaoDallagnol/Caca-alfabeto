@@ -72,12 +72,13 @@ def message_display(text):
 
 
 def dead():
+    pygame.mixer.music.stop()
     message_display("Você Morreu")
 
 
 def escrePlacar(contador):
     font = pygame.font.SysFont(None, 45)
-    text = font.render("Desvios: "+str(contador), True, branco)
+    text = font.render("Letras Coletadas: "+str(contador), True, branco)
     gameDisplay.blit(text, (10, 30))
 
 
@@ -103,16 +104,17 @@ def game_loop():
     item_speed = 3
     item_posicaoX = random.randrange(0, tela_largura)
     item_posicaoY = -250
-    desvios = 0
+    item_altura = 86
+    item_largura = 70
+    coleta = 0
     item = pegaObjeto( random.randrange(1, 7) )
+
+
     
     while True:
-        # inicio - Interação do usuário
-        # event.get do pygame, devolve uma lista de eventos da janela
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
-                # fecha tudo!
                 quit()
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_LEFT:
@@ -135,6 +137,27 @@ def game_loop():
         if item_posicaoY > tela_altura:
             item = pegaObjeto( random.randrange(1, 7) )
             item_posicaoY = 0-86
+
+        escrePlacar(coleta)
+        
+        if cesta_posicaoX > tela_largura - cesta_largura:
+            cesta_posicaoX = tela_largura - cesta_largura
+        elif cesta_posicaoX < 0:
+            cesta_posicaoX = 0
+
+        if cesta_posicaoY+50 < item_posicaoY + item_altura:
+            if cesta_posicaoX < item_posicaoX and cesta_posicaoX + cesta_largura > item_posicaoX or item_posicaoX+item_largura > cesta_posicaoX and item_posicaoX + item_largura < cesta_posicaoX + item_largura:    
+                if item == um or item == dois or item == tres:
+                    dead()
+                elif item == a or item == b or item == c:
+                    item_posicaoY = 0
+                    item_posicaoX = 3000
+                    coleta = coleta + 1
+                    time.sleep(0.02)
+                    
+                    
+        
+        
         
         pygame.display.update()
         clock.tick(60)
