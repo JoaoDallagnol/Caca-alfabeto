@@ -73,7 +73,7 @@ def message_display(text):
 
 def dead():
     pygame.mixer.music.stop()
-    message_display("Você Morreu")
+    message_display("Você Perdeu")
 
 
 def escrePlacar(contador):
@@ -98,6 +98,8 @@ def pegaObjeto(indice):
 
 
 def game_loop():
+    pygame.mixer.music.load("assets/SoundTrack")
+    pygame.mixer.music.play(-1)
     cesta_posicaoX = 350
     cesta_posicaoY = 450
     movimentoX = 0
@@ -134,9 +136,12 @@ def game_loop():
 
         mostrarAlfabeto(item,item_posicaoX, item_posicaoY)
         item_posicaoY = item_posicaoY + item_speed
+
         if item_posicaoY > tela_altura:
             item = pegaObjeto( random.randrange(1, 7) )
             item_posicaoY = 0-86
+            item_speed += 1
+            item_posicaoX = random.randrange(0, tela_largura)
 
         escrePlacar(coleta)
         
@@ -150,10 +155,15 @@ def game_loop():
                 if item == um or item == dois or item == tres:
                     dead()
                 elif item == a or item == b or item == c:
-                    item_posicaoY = 0
+                    item_posicaoY = 900
                     item_posicaoX = 3000
                     coleta = coleta + 1
-                    time.sleep(0.02)
+                    time.sleep(0.05)
+                    if item_posicaoY == 900:
+                        item = pegaObjeto( random.randrange(1, 7) )
+                        item_posicaoX = random.randrange(0, tela_largura)
+                        item_posicaoY = 0-86
+                        
                     
                     
         
